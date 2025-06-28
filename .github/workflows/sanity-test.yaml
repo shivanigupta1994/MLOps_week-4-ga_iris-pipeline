@@ -1,0 +1,35 @@
+name: Sanity Test with CML
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Python dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Install CML
+        run: |
+          npm install -g @dvcorg/cml
+
+      - name: Run tests
+        run: |
+          pytest > result.log || true
+
+      - name: Comment test result
+        env:
+          REPO_TOKEN: ${{ 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 }}
+        run: |
+          cml comment create result.log --token=${REPO_TOKEN}
+
