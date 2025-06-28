@@ -29,6 +29,7 @@ jobs:
 
       - name: Comment test result
         env:
-          REPO_TOKEN: ${{ secrets.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 }}
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cml comment create result.log --token=${REPO_TOKEN}
+
